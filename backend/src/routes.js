@@ -80,9 +80,28 @@ function makeRouter(config, deviceService) {
   });
 
   router.post('/auth/login', (req, res) => {
-    const username = String(req.body.username || '').trim();
-    const password = String(req.body.password || '');
-    if (!username || !password) return res.status(400).json({ error: 'Nhập tên đăng nhập và mật khẩu.' });
+    let username = String(req.body.username || '').trim();
+    let password = String(req.body.password || '');
+
+    // Support HTTP Basic Authentication header: Authorization: Basic <base64(username:password)>
+    const authHeader = req.headers.authorization || '';
+    if (authHeader.startsWith('Basic ')) {
+      try {
+        const decoded = Buffer.from(authHeader.slice(6), 'base64').toString('utf8');
+        const sep = decoded.indexOf(':');
+        if (sep >= 0) {
+          username = decoded.substring(0, sep).trim();
+          password = decoded.substring(sep + 1);
+        }
+      } catch (err) {}
+    }
+
+    if (!username || !password) {
+      return res.status(400).json({
+        error: 'Nhập tên đăng nhập và mật khẩu.',
+        message: 'Hỗ trợ xác thực qua Header Authorization: Basic hoặc JSON body { username, password }.'
+      });
+    }
 
     const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
     if (!user || !bcrypt.compareSync(password, user.password_hash)) {
@@ -94,7 +113,12 @@ function makeRouter(config, deviceService) {
       config.jwtSecret,
       { expiresIn: config.jwtExpiresIn }
     );
-    return res.json({ token, user: publicUser(user) });
+    return res.json({
+      token,
+      token_type: 'Bearer',
+      expires_in: config.jwtExpiresIn,
+      user: publicUser(user)
+    });
   });
 
   router.post('/auth/logout', authenticate, (req, res) => {

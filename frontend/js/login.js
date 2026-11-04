@@ -33,12 +33,18 @@ $('#lgo').onclick = async () => {
   const button = $('#lgo');
   button.disabled = true;
   $('#lerr').textContent = '';
+  const u = $('#u').value.trim();
+  const p = $('#p').value;
   try {
+    const creds = btoa(unescape(encodeURIComponent(`${u}:${p}`)));
     const result = await api('/auth/login', {
       method: 'POST',
+      headers: {
+        'Authorization': `Basic ${creds}`
+      },
       body: {
-        username: $('#u').value.trim(),
-        password: $('#p').value
+        username: u,
+        password: p
       }
     });
     store.set('iot_token', result.token);
@@ -146,8 +152,8 @@ const RES = {
           <td>Đăng nhập</td>
           <td><span class="tag ok">POST</span></td>
           <td><code>/api/auth/login</code></td>
-          <td>Public</td>
-          <td>Cấp JWT Token</td>
+          <td><span class="tag ok">Basic / Credentials</span></td>
+          <td>Xác thực thông tin & Cấp JWT Token</td>
         </tr>
 
         <tr>
@@ -250,7 +256,7 @@ const RES = {
 
 
 const URLS = {
-  code: 'https://github.com/duongvanhuong-b23dcat122/iot-monitor',
+  code: 'https://github.com/hien147909-spec/iot-monitor',
 
   figma: 'https://www.figma.com/design/ovzCv4svSmo6ULwy7XVN6k/Gi%C3%A1m+s%C3%A1t+IoT---B23DCAT122?node-id=0-1&t=gFdTrJfflcijPU5X-0',
 
