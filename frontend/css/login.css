@@ -1,0 +1,61 @@
+﻿#login {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--side), #2a9d8f);
+}
+
+.lbox {
+  background: var(--card);
+  padding: 32px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 20px 50px #0004;
+}
+
+.lbox h2 {
+  margin: 12px 0 4px;
+  font-size: 24px;
+}
+
+.lbox p {
+  color: var(--mut);
+  margin: 0 0 20px;
+}
+
+.lbox label {
+  display: block;
+  font-size: 12px;
+  color: var(--mut);
+  margin: 12px 0 4px;
+}
+
+.lbox input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.lbox .go {
+  width: 100%;
+  margin-top: 20px;
+  padding: 11px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--side2);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.err {
+  color: var(--badt);
+  font-size: 12px;
+  min-height: 16px;
+  margin-top: 8px;
+}

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="vi">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <title>
+   Giám sát IoT
+  </title>
+  <link href="css/base.css" rel="stylesheet"/>
+  <link href="css/login.css" rel="stylesheet"/>
+  <link href="css/layout.css" rel="stylesheet"/>
+  <link href="css/components.css" rel="stylesheet"/>
+  <link href="css/dashboard.css" rel="stylesheet"/>
+  <link href="css/responsive.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <section id="login">
+   <div class="lbox">
+    <div class="logo">
+     <i>
+     </i>
+     Giám sát IoT
+    </div>
+    <h2>
+     Đăng nhập
+    </h2>
+    <p>
+     Hệ thống đo nhiệt độ, độ ẩm, ánh sáng
+    </p>
+    <label>
+     Tên đăng nhập
+    </label>
+    <input autocomplete="username" id="u" value="admin"/>
+    <label>
+     Mật khẩu
+    </label>
+    <input autocomplete="current-password" id="p" type="password" value=""/>
+    <div class="err" id="lerr">
+    </div>
+    <button class="go" id="lgo">
+     Đăng nhập
+    </button>
+    <p style="margin:14px 0 0;font-size:12px">
+     Tài khoản demo: admin / 123456
+    </p>
+   </div>
+  </section>
+  <div id="app">
+   <aside class="side">
+    <div class="logo">
+     <i>
+     </i>
+     Giám sát IoT
+    </div>
+    <nav class="nav" id="nav">
+     <button class="on" data-v="dash">
+      ▦ Tổng quan
+     </button>
+     <button data-v="sensor">
+      ◒ Dữ liệu cảm biến
+     </button>
+     <button data-v="hist">
+      ↺ Lịch sử điều khiển
+     </button>
+     <button data-v="prof">
+      ◉ Hồ sơ
+     </button>
+     <button id="out">
+      ↪ Đăng xuất
+     </button>
+    </nav>
+    <div class="who">
+     Dương Văn Hướng
+     <br/>
+     B23DCAT122
+    </div>
+   </aside>
+   <main class="main">
+    <!-- Dashboard -->
+    <section class="view on" id="v-dash">
+     <div class="top">
+      <div>
+       <h1>
+        Tổng quan
+       </h1>
+       <div class="sub">
+        Theo dõi dữ liệu cảm biến và trạng thái thiết bị theo thời gian thực.
+       </div>
+      </div>
+      <span class="pill" id="conn">
+      </span>
+     </div>
+     <div class="grid4">
+      <div class="card stat">
+       <small>
+        Nhiệt độ
+       </small>
+       <b id="sT">
+        --
+       </b>
+       <small>
+        Cập nhật gần nhất
+       </small>
+      </div>
+      <div class="card stat">
+       <small>
+        Độ ẩm
+       </small>
+       <b id="sH">
+        --
+       </b>
+       <small>
+        Trạng thái ổn định
+       </small>
+      </div>
+      <div class="card stat">
+       <small>
+        Ánh sáng
+       </small>
+       <b id="sL">
+        --
+       </b>
+       <small>
+        Mức sáng trung bình
+       </small>
+      </div>
+      <div class="card stat">
+       <small>
+        Đèn LED
+       </small>
+       <b id="sLed">
+        --
+       </b>
+       <small>
+        ESP32_01 · 3 đèn
+       </small>
+      </div>
+     </div>
+     <div class="two">
+      <div class="card">
+       <div class="row">
+        <b>
+         Biểu đồ: Nhiệt độ, độ ẩm và ánh sáng
+        </b>
+        <small id="chartSource" style="color:var(--mut)">
+         Chờ trạng thái kết nối...
+        </small>
+       </div>
+       <div class="svgw">
+         <div id="chartTip"></div>
+         <svg id="chart" viewbox="0 0 640 300">
+        </svg>
+       </div>
+       <div class="legend">
+        <span style="color:var(--t)">
+         ● Nhiệt độ (°C)
+        </span>
+        <span style="color:var(--h)">
+         ● Độ ẩm (%)
+        </span>
+        <span style="color:var(--l)">
+         ● Ánh sáng (lx)
+        </span>
+        <span id="last" style="color:var(--mut)">
+        </span>
+       </div>
+      </div>
+      <div class="card">
+       <div class="row">
+        <b>
+         Điều khiển LED
+        </b>
+        <span class="pill" id="conn2">
+         ● ESP32 đang kết nối
+        </span>
+       </div>
+       <div class="dev row">
+        <div>
+         <b>
+          ESP32_01
+         </b>
+         <br/>
+         <small style="color:var(--mut)">
+          Điều khiển 3 đèn LED
+         </small>
+        </div>
+        <small id="onl" style="color:var(--mut)">
+         Trạng thái: ONLINE
+        </small>
+       </div>
+       <div id="ledList">
+       </div>
+       <div style="display:flex;gap:10px;margin:12px 0 10px">
+        <button class="btn on" id="allOn">
+         Bật tất cả
+        </button>
+        <button class="btn" id="allOff">
+         Tắt tất cả
+        </button>
+       </div>
+       <div class="kv">
+        <span>
+         Kết nối MQTT
+        </span>
+        <b id="mq">
+         Đã kết nối
+        </b>
+       </div>
+       <div class="kv">
+        <span>
+         Thiết bị
+        </span>
+        <b>
+         ESP32_01
+        </b>
+       </div>
+       <div class="kv">
+        <span>
+         Lệnh gần nhất
+        </span>
+        <b id="lastCmd">
+         --
+        </b>
+       </div>
+       <div class="kv">
+        <span>
+         Cập nhật
+        </span>
+        <b id="upd">
+         --
+        </b>
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sensor data -->
+    <section class="view" id="v-sensor">
+     <div class="top">
+      <div>
+       <h1>
+        Dữ liệu cảm biến
+       </h1>
+       <div class="sub">
+        Tra cứu dữ liệu theo loại cảm biến, giá trị và thời gian.
+       </div>
+      </div>
+      <div>
+       <b id="sCnt" style="font-size:22px">
+        0
+       </b>
+       <small style="color:var(--mut)">
+        bản ghi
+       </small>
+      </div>
+     </div>
+     <div class="card">
+      <div class="fbar">
+       <div>
+        <label>
+         Loại cảm biến
+        </label>
+        <select id="sType">
+         <option value="">
+          Tất cả Sensor
+         </option>
+         <option>
+          Nhiệt độ
+         </option>
+         <option>
+          Độ ẩm
+         </option>
+         <option>
+          Ánh sáng
+         </option>
+        </select>
+       </div>
+       <div class="grow">
+        <label>
+         Giá trị cảm biến
+        </label>
+        <input id="sVal" placeholder="Nhập giá trị (vd: 27.4, >25)..."/>
+       </div>
+       <div class="grow">
+        <label>
+         Thời gian
+        </label>
+        <input id="sTime" placeholder="vd: 2026/08/27 hoặc 08:42"/>
+       </div>
+       <div>
+        <label>
+         Sắp xếp
+        </label>
+        <select id="sSort">
+         <option value="time">
+          Thời gian
+         </option>
+         <option value="val">
+          Giá trị
+         </option>
+         <option value="type">
+          Loại cảm biến
+         </option>
+         <option value="dev">
+          Thiết bị
+         </option>
+        </select>
+       </div>
+       <div>
+        <button class="btn" id="sDir">
+         ↓
+        </button>
+       </div>
+       <div>
+        <button class="btn" id="sReset">
+         Đặt lại
+        </button>
+       </div>
+      </div>
+      <div class="tw">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Thời gian
+          </th>
+          <th>
+           Thiết bị
+          </th>
+          <th>
+           Loại cảm biến
+          </th>
+          <th>
+           Giá trị
+          </th>
+          <th>
+           Đơn vị
+          </th>
+         </tr>
+        </thead>
+        <tbody id="sBody">
+        </tbody>
+       </table>
+      </div>
+      <div class="pg">
+        <span id="sInfo"></span>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)">Hiển thị <select id="sPer" style="padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-size:12px"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="50">50</option></select> dòng/trang</label>
+        <div id="sPg"></div>
+       </div>
+     </div>
+    </section>
+    <!-- History -->
+    <section class="view" id="v-hist">
+     <div class="top">
+      <div>
+       <h1>
+        Lịch sử điều khiển
+       </h1>
+       <div class="sub">
+        Lịch sử thao tác điều khiển thiết bị.
+       </div>
+      </div>
+      <div>
+       <b id="hCnt" style="font-size:22px">
+        0
+       </b>
+       <small style="color:var(--mut)">
+        lịch sử
+       </small>
+      </div>
+     </div>
+     <div class="card">
+      <div class="fbar">
+       <div class="grow">
+        <label>
+         Thời gian
+        </label>
+        <input id="hTime" placeholder="vd: 2026/08/27 hoặc 08:42"/>
+       </div>
+       <div>
+        <label>
+         Thiết bị
+        </label>
+        <select id="hDev">
+         <option value="">
+          Tất cả
+         </option>
+         <option>
+          ESP32_01
+         </option>
+         <option>
+          ESP32_02
+         </option>
+        </select>
+       </div>
+       <div>
+        <label>
+         Thao tác
+        </label>
+        <select id="hAct">
+         <option value="">
+          Tất cả
+         </option>
+         <option value="Bật">
+          Bật đèn
+         </option>
+         <option value="Tắt">
+          Tắt đèn
+         </option>
+        </select>
+       </div>
+       <div>
+        <label>
+         Trạng thái
+        </label>
+        <select id="hSt">
+         <option value="">
+          Tất cả
+         </option>
+         <option value="ok">
+          Thành công
+         </option>
+         <option value="bad">
+          Thất bại
+         </option>
+         <option value="wait">
+          Đang xử lý
+         </option>
+        </select>
+       </div>
+       <div>
+        <button class="btn" id="hDir">
+         ↓
+        </button>
+       </div>
+       <div>
+        <button class="btn" id="hReset">
+         Đặt lại
+        </button>
+       </div>
+      </div>
+      <div class="tw">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Thiết bị
+          </th>
+          <th>
+           Thao tác
+          </th>
+          <th>
+           Trạng thái
+          </th>
+          <th>
+           Thời gian gửi
+          </th>
+          <th>
+           Thời gian phản hồi
+          </th>
+         </tr>
+        </thead>
+        <tbody id="hBody">
+        </tbody>
+       </table>
+      </div>
+      <div class="pg">
+        <span id="hInfo"></span>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)">Hiển thị <select id="hPer" style="padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-size:12px"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="50">50</option></select> dòng/trang</label>
+        <div id="hPg"></div>
+       </div>
+     </div>
+    </section>
+    <!-- Profile -->
+    <section class="view" id="v-prof">
+     <div class="top">
+      <div>
+       <h1>
+        Hồ sơ
+       </h1>
+       <div class="sub">
+        Thông tin người thực hiện và tài nguyên dự án.
+       </div>
+      </div>
+     </div>
+     <div class="two" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+      <div class="card">
+       <div style="display:flex;gap:16px;align-items:center">
+        <img alt="Ảnh Dương Văn Hướng" class="avatar" src="data:image/jpeg;base64,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"/>
+        <div>
+         <b style="font-size:22px">
+          Dương Văn Hướng
+         </b>
+         <br/>
+         <small style="color:var(--mut)">
+          B23DCAT122
+          <br/>
+          Học phần IoT và Ứng dụng
+         </small>
+        </div>
+       </div>
+       <div class="info">
+        <div class="kv">
+         <span>
+          Họ và tên
+         </span>
+         <b>
+          Dương Văn Hướng
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Mã sinh viên
+         </span>
+         <b>
+          B23DCAT122
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Khoa
+         </span>
+         <b>
+          An toàn thông tin
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Học phần
+         </span>
+         <b>
+          IoT và Ứng dụng (INT14149)
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Giảng viên
+         </span>
+         <b>
+          TS. Nguyễn Quốc Uy
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Đề tài
+         </span>
+         <b>
+          Hệ thống đo cảm biến, nhiệt độ, độ ẩm ánh sáng 
+mô phỏng bằng thiết bị LED
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Lớp
+         </span>
+         <b>
+          D23CQAT02-B
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          Email
+         </span>
+         <b>
+          huongdv.b23dcat122@stu.ptit.edu.vn
+         </b>
+        </div>
+        <div class="kv">
+         <span>
+          GitHub
+         </span>
+         <a href="https://github.com/duongvanhuong-b23dcat122" rel="noopener" target="_blank">
+          github.com/duongvanhuong-b23dcat122
+         </a>
+        </div>
+        <div class="kv">
+         <span>
+          Figma
+         </span>
+         <a href="https://www.figma.com/design/ovzCv4svSmo6ULwy7XVN6k/Gi%25C3%25A1m-s%25C3%25A1t-IoT---B23DCAT122?node-id=0-1&amp;p=f&amp;t=ajZi3KQqe3ntX4tG-0" rel="noopener" target="_blank">
+          Figma - Giám sát IoT
+         </a>
+        </div>
+       </div>
+      </div>
+      <div class="card">
+       <div class="row">
+        <b>
+         Tài nguyên dự án
+        </b>
+        <small style="color:var(--mut)">
+        </small>
+       </div>
+       <div class="link">
+        <div>
+         Kho mã nguồn
+         <small>
+          Mã ESP32, backend Node.js và giao diện web
+         </small>
+        </div>
+        <button class="btn" data-r="code">
+         Mở
+        </button>
+       </div>
+       <div class="link">
+        <div>
+         Thiết kế giao diện
+         <small>
+          Bản thiết kế 5 màn hình trên Figma
+         </small>
+        </div>
+        <button class="btn" data-r="figma">
+         Mở
+        </button>
+       </div>
+       <div class="link">
+        <div>
+         Tài liệu API
+         <small>
+          Đầy đủ endpoint REST có xác thực JWT Bearer Token
+         </small>
+        </div>
+        <button class="btn" data-r="api">
+         Xem
+        </button>
+       </div>
+       <div class="link">
+        <div>
+         Báo cáo PDF
+         <small>
+          Báo cáo bài thực hành 1, 4 chương
+         </small>
+        </div>
+        <button class="btn" data-r="pdf">
+         Xem
+        </button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+  </div>
+  <div id="modal">
+   <div class="mbox" id="mbox">
+   </div>
+  </div>
+  <div id="alert-banner" class="alert-banner hidden">
+   <div class="alert-content">
+    <span class="alert-icon">🔔</span>
+    <span class="alert-text">⚠️ CẢNH BÁO: ESP32 mất kết nối! Kiểm tra dây cảm biến và nguồn điện.</span>
+    <button class="alert-close" id="alertClose" title="Đóng">✕</button>
+   </div>
+  </div>
+  <div id="toast">
+  </div>
+  <script src="js/common.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/sensor.js"></script>
+  <script src="js/history.js"></script>
+ </body>
+</html>

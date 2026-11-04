@@ -1,0 +1,321 @@
+@media (max-width: 820px) {
+  .side {
+    position: static;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    padding: 8px;
+  }
+
+  .side .logo,
+  .who {
+    display: none;
+  }
+
+  .nav {
+    flex-direction: row;
+  }
+
+  .nav button {
+    white-space: nowrap;
+  }
+
+  .main {
+    margin: 0;
+    padding: 16px;
+  }
+
+  .two {
+    grid-template-columns: 1fr;
+  }
+
+  #app {
+    height: auto;
+  }
+}
+@media (min-width: 821px) {
+  body.dash {
+    overflow: hidden;
+  }
+
+  body.dash .main {
+    height: 100vh;
+    padding: 16px 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.dash #v-dash.on {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  #v-dash .top {
+    display: none;
+  }
+
+  #v-dash .grid4 {
+    flex: none;
+    margin-bottom: 14px;
+  }
+
+  #v-dash .stat b {
+    font-size: 26px;
+    margin: 6px 0 4px;
+  }
+
+  #v-dash .two {
+    flex: 1;
+    min-height: 0;
+  }
+
+  #v-dash .two > .card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: auto;
+    padding: 14px 16px;
+  }
+
+  #v-dash .svgw {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+  }
+
+  #v-dash .dev {
+    margin: 10px 0;
+    padding: 9px 12px;
+  }
+
+  #v-dash .led {
+    padding: 7px 12px;
+    margin-top: 6px;
+  }
+
+  #v-dash .kv {
+    padding: 4px 0;
+  }
+
+  /* --- Sensor & History Fixed Screen (No Page Scroll, Fits 10 Rows, Aligned with Profile) --- */
+  body.sensor-page,
+  body.hist-page {
+    overflow: hidden;
+  }
+
+  body.sensor-page .main,
+  body.hist-page .main {
+    height: 100vh;
+    padding: 20px 28px 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.sensor-page #v-sensor.on,
+  body.hist-page #v-hist.on {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Kéo phần bảng trắng xuống bằng khoảng cách trang Hồ sơ (margin-bottom: 18px) */
+  #v-sensor .top,
+  #v-hist .top {
+    margin-bottom: 18px;
+    flex: none;
+  }
+
+  #v-sensor .top h1,
+  #v-hist .top h1 {
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  #v-sensor .top .sub,
+  #v-hist .top .sub {
+    font-size: 13.5px;
+    margin-top: 4px;
+  }
+
+  #v-sensor .top b,
+  #v-hist .top b {
+    font-size: 24px;
+  }
+
+  #v-sensor .top small,
+  #v-hist .top small {
+    font-size: 13px;
+  }
+
+  #v-sensor > .card,
+  #v-hist > .card {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 10px 18px 12px;
+  }
+
+  #v-sensor .fbar,
+  #v-hist .fbar {
+    margin-bottom: 6px;
+    gap: 10px;
+    flex: none;
+  }
+
+  #v-sensor .fbar label,
+  #v-hist .fbar label {
+    margin-bottom: 2px;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  #v-sensor .fbar input,
+  #v-sensor .fbar select,
+  #v-hist .fbar input,
+  #v-hist .fbar select {
+    padding: 6px 10px;
+    font-size: 13.5px;
+    border-radius: 8px;
+  }
+
+  #v-sensor .fbar .btn,
+  #v-hist .fbar .btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  #v-sensor .tw,
+  #v-hist .tw {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  #v-sensor table,
+  #v-hist table {
+    width: 100%;
+  }
+
+  #v-sensor table th,
+  #v-hist table th {
+    padding: 8.5px 12px;
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+
+  /* Giãn dòng vừa khít 10 dòng, không thanh cuộn */
+  #v-sensor table td {
+    padding: 9px 12px;
+    font-size: 14px;
+    line-height: 1.42;
+    vertical-align: middle;
+  }
+
+  #v-hist table td {
+    padding: 8.5px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    vertical-align: middle;
+  }
+
+  #v-hist .tag {
+    font-size: 12px;
+    line-height: 1.2;
+    padding: 2px 8px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /* Cách 1 dòng phía trên thanh phân trang và thêm đường viền phân cách mờ */
+  #v-sensor .pg,
+  #v-hist .pg {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    flex: none;
+  }
+
+  #v-sensor .pg select,
+  #v-hist .pg select {
+    font-size: 13px;
+    padding: 2px 6px;
+  }
+
+  #v-sensor .pg button,
+  #v-hist .pg button {
+    font-size: 14px;
+    padding: 3px 10px;
+  }
+
+  /* Khi màn hình cao (>= 850px như Full HD 1080p), các dòng giãn thoáng đãng hơn nữa */
+  @media (min-height: 850px) {
+    body.sensor-page .main,
+    body.hist-page .main {
+      padding: 24px 28px 20px;
+    }
+
+    #v-sensor .top,
+    #v-hist .top {
+      margin-bottom: 22px;
+    }
+
+    #v-sensor .top h1,
+    #v-hist .top h1 {
+      font-size: 27px;
+    }
+
+    #v-sensor .top .sub,
+    #v-hist .top .sub {
+      font-size: 14.5px;
+      margin-top: 5px;
+    }
+
+    #v-sensor > .card,
+    #v-hist > .card {
+      padding: 14px 22px 14px;
+    }
+
+    #v-sensor .fbar,
+    #v-hist .fbar {
+      margin-bottom: 10px;
+      gap: 12px;
+    }
+
+    #v-sensor table th,
+    #v-hist table th {
+      padding: 11px 14px;
+      font-size: 14.5px;
+    }
+
+    #v-sensor table td,
+    #v-hist table td {
+      padding: 11px 14px;
+      font-size: 15px;
+      line-height: 1.45;
+      vertical-align: middle;
+    }
+
+    #v-hist .tag {
+      font-size: 12.5px;
+      line-height: 1.25;
+      padding: 2.5px 9px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    #v-sensor .pg,
+    #v-hist .pg {
+      margin-top: 16px;
+      padding-top: 12px;
+      font-size: 14px;
+    }
+  }
+}

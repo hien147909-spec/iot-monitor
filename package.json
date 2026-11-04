@@ -1,0 +1,24 @@
+{
+  "name": "iot-monitor-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "He thong giam sat IoT ESP32 - DHT11, LDR, LED voi Express, SQLite va MQTT",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "node --watch backend/src/server.js",
+    "check": "node --check backend/src/config.js && node --check backend/src/database.js && node --check backend/src/mqtt-service.js && node --check backend/src/routes.js && node --check backend/src/server.js && node --check frontend/js/common.js && node --check frontend/js/login.js && node --check frontend/js/dashboard.js && node --check frontend/js/sensor.js && node --check frontend/js/history.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mqtt": "^5.10.4"
+  }
+}

@@ -1,0 +1,77 @@
+﻿.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.logo i {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--acc);
+  display: inline-block;
+}
+
+#app {
+  display: none;
+  height: 100%;
+}
+
+.side {
+  width: 200px;
+  background: var(--side);
+  color: #cfe3e6;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.side .logo {
+  color: #fff;
+  margin: 0 4px 24px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav button {
+  background: none;
+  border: 0;
+  color: inherit;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.nav button.on {
+  background: var(--side2);
+  color: #fff;
+  font-weight: 600;
+}
+
+.nav button:hover {
+  background: #ffffff14;
+}
+
+.who {
+  font-size: 11px;
+  color: #9fbec3;
+  padding: 4px;
+}
+
+.main {
+  margin-left: 200px;
+  padding: 20px 28px 40px;
+  min-height: 100%;
+}
